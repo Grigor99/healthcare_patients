@@ -20,5 +20,8 @@ public class DoctorSearchDto implements Serializable {
     private String lastName;
     private String specialProfession;
     private String biography;
-    private Integer experience;
+    private Integer experienceFrom;
+    private Integer experienceTo;
+
+
 }

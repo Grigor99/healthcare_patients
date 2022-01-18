@@ -1,8 +1,10 @@
 package com.example.healthcare_patient.controller;
 
 import com.example.healthcare_patient.elastic.DoctorSearchDto;
+import com.example.healthcare_patient.elastic.index.Docs;
+import com.example.healthcare_patient.service.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
+import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,10 +16,12 @@ import java.io.Serializable;
 public class DoctorsController implements Serializable {
 
     @Autowired
-    private ElasticsearchOperations elasticsearchOperations;
+    private SearchService service;
+
 
     @PostMapping
     public ResponseEntity<?> searchWithinDocs(@RequestBody DoctorSearchDto searchDto) {
-        return null;
+        SearchHits<Docs> result = service.search(searchDto);
+        return ResponseEntity.ok(result);
     }
 }
