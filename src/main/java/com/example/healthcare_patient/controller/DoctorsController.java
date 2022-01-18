@@ -3,6 +3,7 @@ package com.example.healthcare_patient.controller;
 import com.example.healthcare_patient.elastic.DoctorSearchDto;
 import com.example.healthcare_patient.elastic.index.Docs;
 import com.example.healthcare_patient.service.SearchService;
+import com.example.healthcare_patient.utils.SearchUri;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ public class DoctorsController implements Serializable {
     private SearchService service;
 
 
-    @PostMapping
+    @PostMapping(value = SearchUri.SEARCH)
     public ResponseEntity<?> searchWithinDocs(@RequestBody DoctorSearchDto searchDto) {
         SearchHits<Docs> result = service.search(searchDto);
         return ResponseEntity.ok(result);

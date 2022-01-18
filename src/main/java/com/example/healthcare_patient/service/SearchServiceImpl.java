@@ -16,9 +16,8 @@ import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class SearchServiceImpl implements SearchService {
@@ -58,8 +57,8 @@ public class SearchServiceImpl implements SearchService {
             experience = QueryBuilders.rangeQuery("experience").from(searchDto.getExperienceFrom(), true);
         }
 
-        List<QueryBuilder> nonNullBuilders = Arrays.asList(firstName, lastName, specialProfession, biography, experience);
-        nonNullBuilders.stream().filter(object -> object != null).collect(Collectors.toList());
+        List<QueryBuilder> nonNullBuilders = filter(firstName, lastName, specialProfession, biography, experience);
+
         BoolQueryBuilder boolQueryBuilder = null;
         if (!CollectionUtils.isEmpty(new List[]{nonNullBuilders})) {
             boolQueryBuilder = QueryBuilders.boolQuery();
@@ -67,13 +66,25 @@ public class SearchServiceImpl implements SearchService {
                 boolQueryBuilder.must(queryBuilder);
             }
         }
+
         NativeSearchQuery query = new NativeSearchQueryBuilder()
                 .withFilter(boolQueryBuilder)
                 .build();
+
         SearchHits<Docs>
                 searchHits = elasticsearchOperations.search(query, Docs.class
                 , IndexCoordinates.of("docs"));
         return searchHits;
 
+    }
+
+    private List<QueryBuilder> filter(QueryBuilder... queryBuilders) {
+        List<QueryBuilder> nonNullBuilders = new ArrayList<>();
+        for (QueryBuilder queryBuilder : queryBuilders) {
+            if (queryBuilder != null) {
+                nonNullBuilders.add(queryBuilder);
+            }
+        }
+        return nonNullBuilders;
     }
 }
