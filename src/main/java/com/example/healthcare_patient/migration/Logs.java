@@ -11,12 +11,12 @@ import lombok.Setter;
 @Setter
 @Getter
 @NoArgsConstructor
-@ChangeLog(order = "001")
+@ChangeLog(order = "101")
 public class Logs {
 
     private final String PATIENT_COLLECTION = "patients";
 
-    @ChangeSet(order = "001", id = "create patients collection", author = "mongock")
+    @ChangeSet(order = "101", id = "create patients collection", author = "mongock")
     public void createDepartmentCollection(MongockTemplate db) {
         if (!db.collectionExists(PATIENT_COLLECTION)) {
             db.createCollection(PATIENT_COLLECTION);
