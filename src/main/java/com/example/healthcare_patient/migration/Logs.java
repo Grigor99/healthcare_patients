@@ -17,7 +17,7 @@ public class Logs {
     private final String PATIENT_COLLECTION = "patients";
 
     @ChangeSet(order = "101", id = "create patients collection", author = "mongock")
-    public void createDepartmentCollection(MongockTemplate db) {
+    public void createPatientsCollection(MongockTemplate db) {
         if (!db.collectionExists(PATIENT_COLLECTION)) {
             db.createCollection(PATIENT_COLLECTION);
         }
